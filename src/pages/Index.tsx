@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { TokenList } from "@/components/TokenList";
 import { TradingPanel } from "@/components/TradingPanel";
-import { TradeHistory } from "@/components/TradeHistory";
 import { SnipeForm } from "@/components/SnipeForm";
 import { Token, TradingMode } from "@/utils/types";
 
@@ -21,7 +20,7 @@ const Index = () => {
   };
 
   const handleTradeComplete = () => {
-    // Trigger a refresh of the trade history and tokens
+    // Trigger a refresh of the tokens
     setRefreshTokens((prev) => prev + 1);
   };
 
@@ -61,10 +60,7 @@ const Index = () => {
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
-              <SnipeForm onTokenAdded={handleTokenAdded} />
-              <TradeHistory key={`history-${refreshTokens}`} />
-            </div>
+            <SnipeForm onTokenAdded={handleTokenAdded} />
           </div>
         </div>
       </div>
