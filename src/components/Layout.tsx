@@ -34,14 +34,7 @@ function Header() {
           </div>
           <span className="font-semibold text-xl">Solana Trader</span>
         </div>
-        <div className="flex items-center gap-4">
-          <nav className="hidden md:flex items-center gap-6">
-            <NavLink href="#" isActive>Dashboard</NavLink>
-            <NavLink href="#">Portfolio</NavLink>
-            <NavLink href="#">Settings</NavLink>
-          </nav>
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
       </div>
     </header>
   );
@@ -55,25 +48,5 @@ function Footer() {
         <p>Trading simulated tokens on Solana testnet only. No real assets are used.</p>
       </div>
     </footer>
-  );
-}
-
-interface NavLinkProps {
-  href: string;
-  children: ReactNode;
-  isActive?: boolean;
-}
-
-function NavLink({ href, children, isActive }: NavLinkProps) {
-  return (
-    <a 
-      href={href}
-      className={cn(
-        "text-sm font-medium transition-colors hover:text-primary",
-        isActive ? "text-foreground" : "text-muted-foreground"
-      )}
-    >
-      {children}
-    </a>
   );
 }
