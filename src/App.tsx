@@ -15,6 +15,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
     <QueryClientProvider client={queryClient}>
+    {/* <ApolloWrapper> */}
       <WalletProvider>
         <TooltipProvider>
           <Toaster />
@@ -29,6 +30,7 @@ const App = () => (
           </BrowserRouter>
         </TooltipProvider>
       </WalletProvider>
+    {/* </ApolloWrapper> */}
     </QueryClientProvider>
   </ThemeProvider>
 );

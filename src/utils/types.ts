@@ -10,6 +10,7 @@ export interface Token {
   address: string;
 }
 
+
 export interface TradeHistory {
   id: string;
   timestamp: Date;

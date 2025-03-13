@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { getAllTokenList } from "@/lib/gql";
 
 interface TokenListProps {
   onSelectToken: (token: Token) => void;
@@ -23,7 +24,7 @@ export function TokenList({ onSelectToken }: TokenListProps) {
     const loadTokens = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchTokens();
+        const data = await getAllTokenList();
         setTokens(data);
         setFilteredTokens(data);
       } catch (error) {
@@ -96,7 +97,7 @@ interface TokenCardProps {
 }
 
 function TokenCard({ token, onSelectToken }: TokenCardProps) {
-  const priceChangeFormatted = token.priceChange24h.toFixed(2);
+  const priceChangeFormatted = token.priceChange24h?.toFixed(2);
   const isPriceUp = token.priceChange24h >= 0;
   const formattedPrice = token.price < 0.01 
     ? token.price.toExponential(2) 

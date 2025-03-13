@@ -5,6 +5,7 @@ import { TokenList } from "@/components/TokenList";
 import { TradingPanel } from "@/components/TradingPanel";
 import { SnipeForm } from "@/components/SnipeForm";
 import { Token, TradingMode } from "@/utils/types";
+import { getAllTokenList } from "@/lib/gql";
 
 const Index = () => {
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
