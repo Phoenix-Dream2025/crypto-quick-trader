@@ -2,6 +2,7 @@
 import { ReactNode } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,11 +34,14 @@ function Header() {
           </div>
           <span className="font-semibold text-xl">Solana Trader</span>
         </div>
-        <nav className="flex items-center gap-6">
-          <NavLink href="#" isActive>Dashboard</NavLink>
-          <NavLink href="#">Portfolio</NavLink>
-          <NavLink href="#">Settings</NavLink>
-        </nav>
+        <div className="flex items-center gap-4">
+          <nav className="hidden md:flex items-center gap-6">
+            <NavLink href="#" isActive>Dashboard</NavLink>
+            <NavLink href="#">Portfolio</NavLink>
+            <NavLink href="#">Settings</NavLink>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
