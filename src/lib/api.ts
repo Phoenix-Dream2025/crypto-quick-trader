@@ -1,6 +1,5 @@
-
 import { Token, TradeHistory, TradeParams } from "@/utils/types";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 // Mock data for tokens
 const mockTokens: Token[] = [
