@@ -149,7 +149,7 @@ function TokenCard({ token, onSelectToken }: TokenCardProps) {
 
           <div className="flex justify-between items-center">
             <span className="text-xs text-muted-foreground">
-              24h Vol: ${(token.volume24h / 1000000).toFixed(2)}M
+              24h Vol: ${(token.volume24h / 1000000)?.toFixed(2)}M
             </span>
             <Button 
               size="sm" 

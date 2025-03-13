@@ -86,69 +86,7 @@ export const getAllTokenList = async (): Promise<Token[]> => {
             })
         });
         const tokenList = await res.json();
-        const mockTokens: Token[] = [
-            {
-                id: "1",
-                name: "Solana",
-              symbol: "SOL",
-              price: 93.42,
-              priceChange24h: 5.8,
-              volume24h: 2453789054,
-              logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.png",
-              address: "So11111111111111111111111111111111111111112",
-            },
-            
-            {
-              id: "2",
-              name: "Raydium",
-              symbol: "RAY",
-              price: 0.385,
-              priceChange24h: -2.1,
-              volume24h: 58934201,
-              logoUrl: "https://cryptologos.cc/logos/raydium-ray-logo.png",
-              address: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-            },
-            {
-              id: "3",
-              name: "Serum",
-              symbol: "SRM",
-              price: 0.051,
-              priceChange24h: 1.2,
-              volume24h: 12489503,
-              logoUrl: "https://cryptologos.cc/logos/serum-srm-logo.png",
-              address: "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
-            },
-            {
-              id: "4",
-              name: "Mango",
-              symbol: "MNGO",
-              price: 0.021,
-              priceChange24h: -3.7,
-              volume24h: 5893421,
-              logoUrl: "https://cryptologos.cc/logos/mango-markets-mngo-logo.png",
-              address: "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
-            },
-            {
-              id: "5",
-              name: "Orca",
-              symbol: "ORCA",
-              price: 0.641,
-              priceChange24h: 7.5,
-              volume24h: 34562108,
-              logoUrl: "https://cryptologos.cc/logos/orca-orca-logo.png",
-              address: "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
-            },
-            {
-              id: "6",
-              name: "Bonk",
-              symbol: "BONK",
-              price: 0.000024,
-              priceChange24h: 15.3,
-              volume24h: 456721089,
-              logoUrl: "https://cryptologos.cc/logos/bonk-bonk-logo.png",
-              address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
-            },
-          ];
+
         let tokens :Token[] = [];
         tokenList.data.tokens.map((data, id)=>{
             const token = {
@@ -164,7 +102,6 @@ export const getAllTokenList = async (): Promise<Token[]> => {
             tokens.push(token);
         })
         console.log(tokens);
-        console.log(mockTokens);
 
         return tokens;
         
