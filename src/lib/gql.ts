@@ -132,12 +132,9 @@ export const buySellGraph = async (param: TradeParams) => {
         
         console.log(swapTransaction);
 
-        const transaction = await deserializeTransaction(swapTransaction.data.trade, param.wallet);
+        const signature = await deserializeTransaction(swapTransaction.data.trade, param.wallet);
 
-        param.wallet.signTransaction(transaction);
-        
-
-        return transaction
+        return signature
     }
     catch(err:any){
         throw new Error(err.message);
