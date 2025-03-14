@@ -9,6 +9,7 @@ import { getAllTokenList } from "@/lib/gql";
 
 const Index = () => {
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [solanaPrice, setSolanaPrice] = useState<number>(null);
   const [tradingMode, setTradingMode] = useState<TradingMode>("MANUAL");
   const [refreshTokens, setRefreshTokens] = useState(0);
 
@@ -48,12 +49,13 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <TokenList onSelectToken={handleSelectToken} key={`tokens-${refreshTokens}`} />
+            <TokenList onSelectToken={handleSelectToken} key={`tokens-${refreshTokens}`} setSolanaPrice ={setSolanaPrice}/>
           </div>
           
           <div className="space-y-6">
             <div id="trading-panel">
               <TradingPanel 
+                Solana = {solanaPrice}
                 selectedToken={selectedToken}
                 onTradeComplete={handleTradeComplete}
                 tradingMode={tradingMode}

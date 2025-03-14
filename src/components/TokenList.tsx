@@ -12,9 +12,10 @@ import { getAllTokenList } from "@/lib/gql";
 
 interface TokenListProps {
   onSelectToken: (token: Token) => void;
+  setSolanaPrice:any;
 }
 
-export function TokenList({ onSelectToken }: TokenListProps) {
+export function TokenList({ onSelectToken, setSolanaPrice }: TokenListProps) {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [filteredTokens, setFilteredTokens] = useState<Token[]>([]);
   const [search, setSearch] = useState("");
@@ -25,6 +26,7 @@ export function TokenList({ onSelectToken }: TokenListProps) {
       setIsLoading(true);
       try {
         const data = await getAllTokenList();
+        setSolanaPrice(data[0].price);
         setTokens(data);
         setFilteredTokens(data);
       } catch (error) {

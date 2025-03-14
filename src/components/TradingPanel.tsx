@@ -13,6 +13,7 @@ import { executeTrade } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 interface TradingPanelProps {
+  Solana: number;
   selectedToken: Token | null;
   onTradeComplete: () => void;
   tradingMode: 'AUTO' | 'MANUAL';
@@ -20,22 +21,40 @@ interface TradingPanelProps {
 }
 
 export function TradingPanel({
+  Solana,
   selectedToken,
   onTradeComplete,
   tradingMode,
   onTradingModeChange,
 }: TradingPanelProps) {
   const [amount, setAmount] = useState<string>("");
+  const [amountAsSol, setAmountAsSol] = useState<string>("");
   const [slippageTolerance, setSlippageTolerance] = useState<string>("1");
   const [stopLossPrice, setStopLossPrice] = useState<string>("");
   const [isBuying, setIsBuying] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [hasStopLoss, setHasStopLoss] = useState<boolean>(false);
 
-  const handleAmountChange = (value: string) => {
+  const handleAmountChangeastoken = (value: string) => {
     // Only allow numbers and decimal points
     if (/^[0-9]*\.?[0-9]*$/.test(value) || value === "") {
       setAmount(value);
+      let amounttoken : number = parseFloat(value?value:'0.0');
+      const priceAsSol = selectedToken.price/Solana;
+      console.log(amounttoken);
+      value?setAmountAsSol(`${priceAsSol*amounttoken}`):setAmountAsSol("");
+
+    }
+  };
+  const handleAmountChangeassol = (value: string) => {
+    // Only allow numbers and decimal points
+    if (/^[0-9]*\.?[0-9]*$/.test(value) || value === "") {
+
+      setAmountAsSol(value);
+      let amountSol : number = parseFloat(value?value:'0.0');
+      const priceAsToken = Solana/selectedToken.price;
+      console.log(priceAsToken);
+      value?setAmount(`${priceAsToken*amountSol}`):setAmount("");
     }
   };
 
@@ -165,13 +184,43 @@ export function TradingPanel({
               <TabsContent value="buy" className="pt-4">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="amount">Amount to Buy ({selectedToken.symbol})</Label>
-                    <Input
-                      id="amount"
-                      placeholder="0.00"
-                      value={amount}
-                      onChange={(e) => handleAmountChange(e.target.value)}
-                    />
+                    <Label htmlFor="amount">Amount to Buy</Label>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                        alt={selectedToken.name}
+                        className="h-9 w-9  object-cover rounded-full"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://cryptologos.cc/logos/placeholder-logo.png";
+                        }}
+                      />
+                      <Input
+                        id="amountAsSol"
+                        placeholder="0.00"
+                        value={amountAsSol}
+                        onChange={(e) => handleAmountChangeassol(e.target.value)}
+                        
+                        />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selectedToken.logoUrl}
+                        alt={selectedToken.name}
+                        className="h-9 w-9 object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://cryptologos.cc/logos/placeholder-logo.png";
+                        }}
+                      />
+                      <Input
+                        id="amount"
+                        placeholder="0.00"
+                        value={amount}
+                        onChange={(e) => handleAmountChangeastoken(e.target.value)}
+                        disabled
+                        />
+                    </div>
+                    
+                    
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -232,13 +281,40 @@ export function TradingPanel({
               <TabsContent value="sell" className="pt-4">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="sell-amount">Amount to Sell ({selectedToken.symbol})</Label>
-                    <Input
-                      id="sell-amount"
-                      placeholder="0.00"
-                      value={amount}
-                      onChange={(e) => handleAmountChange(e.target.value)}
-                    />
+                  <Label htmlFor="amount">Amount to Sell</Label>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selectedToken.logoUrl}
+                        alt={selectedToken.name}
+                        className="h-9 w-9 object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://cryptologos.cc/logos/placeholder-logo.png";
+                        }}
+                      />
+                      <Input
+                        id="amount"
+                        placeholder="0.00"
+                        value={amount}
+                        onChange={(e) => handleAmountChangeastoken(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png"
+                        alt={selectedToken.name}
+                        className="h-9 w-9  object-cover rounded-full"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://cryptologos.cc/logos/placeholder-logo.png";
+                        }}
+                      />
+                      <Input
+                        id="amountAsSol"
+                        placeholder="0.00"
+                        value={amountAsSol}
+                        onChange={(e) => handleAmountChangeassol(e.target.value)}
+                        disabled
+                        />
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
