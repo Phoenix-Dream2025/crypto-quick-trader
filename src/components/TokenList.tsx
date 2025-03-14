@@ -48,14 +48,18 @@ export function TokenList({ onSelectToken, setSolanaPrice, tokens, setTokens }: 
 
   const handleSearch = async (query: string) => {
     setSearch(query);
-    if (query.trim() === "") {
+    if (query.trim() == "" || query == "") {
       setFilteredTokens(tokens);
       return;
     }
 
     try {
-      const results = await searchTokens(query);
-      setFilteredTokens(results);
+      const filtered = tokens.filter(
+        (token) =>
+          token.name.toLowerCase().includes(query.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredTokens(filtered);
     } catch (error) {
       console.error("Failed to search tokens:", error);
     }
