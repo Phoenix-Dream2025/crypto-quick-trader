@@ -186,7 +186,7 @@ export function TradingPanel({
                     )}
                   >
                     {isPriceUp ? "+" : ""}
-                    {selectedToken.priceChange24h.toFixed(2)}%
+                    {selectedToken.priceChange24h?.toFixed(2)}%
                   </span>
                 </div>
               </div>
