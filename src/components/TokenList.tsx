@@ -13,10 +13,11 @@ import { getAllTokenList } from "@/lib/gql";
 interface TokenListProps {
   onSelectToken: (token: Token) => void;
   setSolanaPrice:any;
+  tokens: Token[]
+  setTokens: any;
 }
 
-export function TokenList({ onSelectToken, setSolanaPrice }: TokenListProps) {
-  const [tokens, setTokens] = useState<Token[]>([]);
+export function TokenList({ onSelectToken, setSolanaPrice, tokens, setTokens }: TokenListProps) {
   const [filteredTokens, setFilteredTokens] = useState<Token[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,12 @@ export function TokenList({ onSelectToken, setSolanaPrice }: TokenListProps) {
 
     loadTokens();
   }, []);
+
+  useEffect(()=>{
+    setFilteredTokens(tokens);
+    handleSearch(search);
+    console.log(filteredTokens);
+  },[tokens])
 
   const handleSearch = async (query: string) => {
     setSearch(query);
@@ -70,10 +77,10 @@ export function TokenList({ onSelectToken, setSolanaPrice }: TokenListProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => (
+          ? Array.from({ length: 6 })?.map((_, i) => (
               <TokenCardSkeleton key={i} />
             ))
-          : filteredTokens.map((token) => (
+          : filteredTokens?.map((token) => (
               <TokenCard
                 key={token.id}
                 token={token}

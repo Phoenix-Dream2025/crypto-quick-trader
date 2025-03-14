@@ -1,4 +1,5 @@
-import { Token } from "@/utils/types";
+import { Token, TradeParams } from "@/utils/types";
+import { deserializeTransaction } from "./sign-transaction";
 
 const HYGRAPH_ENDPOINT = 'http://46.4.5.53:4000/graphql';  // Replace with your endpoint
 
@@ -75,7 +76,7 @@ const GET_ALL_Token_QUERY = `
 // `;
 
 export const getAllTokenList = async (): Promise<Token[]> => {
-    // try{
+    try{
         const res = await fetch(HYGRAPH_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -88,7 +89,7 @@ export const getAllTokenList = async (): Promise<Token[]> => {
         const tokenList = await res.json();
 
         let tokens :Token[] = [];
-        tokenList.data.tokens.map((data, id)=>{
+        tokenList.data.tokens?.map((data, id)=>{
             const token = {
                     id: ""+id,
                     name: data.name,
@@ -98,6 +99,7 @@ export const getAllTokenList = async (): Promise<Token[]> => {
                     volume24h: data.v24hUSD,
                     logoUrl: data.logoURI,
                     address: data.address,
+                    decimal: data.decimals
             }
             tokens.push(token);
         })
@@ -105,10 +107,75 @@ export const getAllTokenList = async (): Promise<Token[]> => {
 
         return tokens;
         
-    // }
-    // catch(err:any){
-    //     throw new Error(err.message);
-    // }
+    }
+    catch(err:any){
+        throw new Error(err.message);
+    }
+}
+
+export const buySellGraph = async (param: TradeParams) => {
+    const BuySellQuery = `
+    query { trade(type: \"${param.action}\", address: \"${param.tokenAddress}\", publicKey: \"${param.walletAddress}\", slippage: ${param.slippageTolerance}, amount: ${param.amount*Math.pow(10,param.decimal)}) }
+    `;
+    console.log(BuySellQuery);
+    try{
+        const res = await fetch(HYGRAPH_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'query': BuySellQuery
+            })
+        });
+        const swapTransaction = await res.json();
+        
+        console.log(swapTransaction);
+
+        const transaction = await deserializeTransaction(swapTransaction.data.trade, param.wallet);
+
+        param.wallet.signTransaction(transaction);
+        
+
+        return transaction
+    }
+    catch(err:any){
+        throw new Error(err.message);
+    }
+}
+
+export const addNewToken = async (token: string, id:number) =>{
+    const newTokenQuery = `
+    query { token(address: \"${token}\") {address name symbol decimals logoURI price lastTradeUnixTime liquidity mc v24hChangePercent v24hUSD} }
+    `;
+    try{
+        const res = await fetch(HYGRAPH_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'query': newTokenQuery
+            })
+        });
+        const newTokenJson = await res.json();
+        const newToken = {
+            id: ""+id,
+            name: newTokenJson.data.token.name,
+            symbol: newTokenJson.data.token.symbol,
+            price: newTokenJson.data.token.price,
+            priceChange24h: newTokenJson.data.token.v24hChangePercent,
+            volume24h: newTokenJson.data.token.v24hUSD,
+            logoUrl: newTokenJson.data.token.logoURI,
+            address: newTokenJson.data.token.address,
+            decimal: newTokenJson.data.token.decimals
+    }
+
+        return newToken;
+    }
+    catch(err:any){
+        throw new Error(err.message);
+    }
 }
 
 // try {
